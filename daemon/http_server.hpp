@@ -32,7 +32,9 @@ class HttpServer {
   explicit HttpServer(std::shared_ptr<SessionManager> session_manager,
                       std::shared_ptr<Browser> browser,
                       std::shared_ptr<Config> config)
-      : session_manager_(session_manager), browser_(browser), config_(config){};
+      : session_manager_(session_manager), browser_(browser), config_(config){
+      BOOST_LOG_TRIVIAL(debug) << "http_server constructor";
+      };
   bool init();
   bool terminate();
 
