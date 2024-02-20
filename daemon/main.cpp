@@ -150,11 +150,15 @@ int main(int argc, char* argv[]) {
         throw std::runtime_error(std::string("DriverManager:: init failed"));
       }
 
+      BOOST_LOG_TRIVIAL(debug) << "main:: starting browser ...";
+
       /* start browser */
       auto browser = Browser::create(config);
       if (browser == nullptr || !browser->init()) {
         throw std::runtime_error(std::string("Browser:: init failed"));
       }
+
+      BOOST_LOG_TRIVIAL(debug) << "main:: starting session manager ...";
 
       /* start session manager */
       auto session_manager = SessionManager::create(driver, browser, config);
@@ -162,11 +166,15 @@ int main(int argc, char* argv[]) {
         throw std::runtime_error(std::string("SessionManager:: init failed"));
       }
 
+      BOOST_LOG_TRIVIAL(debug) << "main:: starting mDNS server ...";
+
       /* start mDNS server */
       MDNSServer mdns_server(session_manager, config);
       if (config->get_mdns_enabled() && !mdns_server.init()) {
         throw std::runtime_error(std::string("MDNSServer:: init failed"));
       }
+
+      BOOST_LOG_TRIVIAL(debug) << "main:: starting RTSP server ...";
 
       /* start rtsp server */
       RtspServer rtsp_server(session_manager, config);
@@ -174,11 +182,15 @@ int main(int argc, char* argv[]) {
         throw std::runtime_error(std::string("RtspServer:: init failed"));
       }
 
+      BOOST_LOG_TRIVIAL(debug) << "main:: starting HTTP server ...";
+
       /* start http server */
       HttpServer http_server(session_manager, browser, config);
       if (!http_server.init()) {
         throw std::runtime_error(std::string("HttpServer:: init failed"));
       }
+
+      BOOST_LOG_TRIVIAL(debug) << "main:: loading status ...";
 
       /* load session status from file */
       session_manager->load_status();
